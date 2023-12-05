@@ -6,17 +6,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Api
 {
-    public class HttpTrigger
+    public class HttpTrigger(ILoggerFactory loggerFactory)
     {
-        private readonly ILogger _logger;
-
-        public HttpTrigger(ILoggerFactory loggerFactory)
-        {
-            _logger = loggerFactory.CreateLogger<HttpTrigger>();
-        }
+        private readonly ILogger _logger = loggerFactory.CreateLogger<HttpTrigger>();
 
         [Function("WeatherForecast")]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
+        public static HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             var randomNumber = new Random();
             var temp = 0;
@@ -34,7 +29,7 @@ namespace Api
             return response;
         }
 
-        private string GetSummary(int temp)
+        private static string GetSummary(int temp)
         {
             var summary = "Mild";
 
