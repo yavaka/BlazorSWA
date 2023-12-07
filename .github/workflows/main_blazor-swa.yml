@@ -38,5 +38,5 @@ jobs:
         with:
           app-name: 'blazor-swa'
           slot-name: 'Production'
-          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}\output'
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}\Api\output'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_24C2168E64454D8F96C7DDC340684C9A }}
