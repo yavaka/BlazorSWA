@@ -29,7 +29,7 @@ jobs:
         shell: pwsh
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          dotnet build --property:OutputPath=.\bin\Release\net7.0
+          dotnet build --property:OutputPath=.\output
           popd
 
       - name: 'Run Azure Functions Action'
@@ -38,5 +38,5 @@ jobs:
         with:
           app-name: 'blazor-swa'
           slot-name: 'Production'
-          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}\bin\Release\net7.0'
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}\output'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_24C2168E64454D8F96C7DDC340684C9A }}
