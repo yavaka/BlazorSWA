@@ -6,9 +6,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Api.Functions;
 
-public class GetLinks(ILoggerFactory loggerFactory)
+public class GetLinks
 {
-    private readonly ILogger _logger = loggerFactory.CreateLogger<GetLinks>();
+    private readonly ILogger _logger;
+
+    GetLinks(ILoggerFactory loggerFactory)
+    {
+        _logger = loggerFactory.CreateLogger<GetLinks>();
+    }
 
     [Function("GetLinks")]
     public async Task<HttpResponseData> Run(
