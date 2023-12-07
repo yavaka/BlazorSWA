@@ -23,7 +23,7 @@ public class GetLinks(ILoggerFactory loggerFactory)
         _logger.LogInformation("C# HTTP trigger function processed a request.");
 
         var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(linkItem.First());
+        await response.WriteAsJsonAsync(linkItem.Single());
 
         return response;
     }
