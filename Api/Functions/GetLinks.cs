@@ -10,7 +10,7 @@ public class GetLinks
 {
     private readonly ILogger _logger;
 
-    GetLinks(ILoggerFactory loggerFactory)
+    public GetLinks(ILoggerFactory loggerFactory)
     {
         _logger = loggerFactory.CreateLogger<GetLinks>();
     }
