@@ -1,0 +1,10 @@
+﻿<div>
+    <p>Enter a link and press enter</p>
+    <input class="input is-large is-size-2 @(IsInvalidUrl ? "is-invalid" : string.Empty)" id="newLink" ref="newLink"
+        type="text" placeholder="http://example.com" @bind="NewLinkUrl" @bind:event="oninput" @onkeyup="AddNewLink" />
+    <div v-show="isUrlInvalid" class="errorMessage">
+        <p class="has-text-danger is-font-weight-medium @(IsInvalidUrl ? string.Empty : "is-hidden")">
+            That doesn't look like a valid URL
+        </p>
+    </div>
+</div>
