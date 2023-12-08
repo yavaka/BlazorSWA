@@ -1,33 +1,73 @@
 ﻿@page "/{vanityUrl}"
 @using BlazorApp.Client.Layout.Components
 
-<div class="container main content">
-    @* <new-link @onAddNewLink="addLink"></new-link> *@
-    @* Link header *@
-    <div id="linkHeader" class="columns is-mobile is-vcentered is-gapless">
-        <div class="column">
-            <h3 class="has-text-primary is-size-3 has-text-weight-medium">
-                Links
-            </h3>
-        </div>
-        <div class="column">
-            <span class="is-pulled-right">Drag links to re-order</span>
+@if (_showNotFoundNotification)
+{
+    <DangerNotification Message="@($"Vanity Url '{VanityUrl}' could not be found!")" />
+}
+else if (CurrentList == default!)
+{
+    <LoadingSpinner />
+}
+else
+{
+    <div class="container">
+        <div class="section">
+            <div>
+                <h2 class="is-size-3 is-heading has-text-weight-medium has-text-primary">
+                    @CurrentList.Description
+                </h2>
+                <div class="columns is-mobile">
+
+                    @* Social media buttons *@
+                    <div class="column is-half">
+                        <div id="share" class="buttons has-addons">
+                            <a class="button" target="_blank"
+                                href="https://twitter.com/intent/tweet?text=@(CurrentList.Description) theurlist.com/@(CurrentList.VanityUrl)">
+                                <span class="icon"><i class="fab fa-twitter"></i></span>
+                            </a>
+                            <a class="button" target="_blank"
+                                href="https://www.facebook.com/sharer/sharer.php?u=theurlist.com/@(CurrentList.VanityUrl)">
+                                <span class="icon"><i class="fab fa-facebook-f"></i></span>
+                            </a>
+                            <a class="button" target="_blank"
+                                href="https://www.linkedin.com/shareArticle?mini=true?summary=@(CurrentList.Description)&url=https://theurlist.com?@(CurrentList.VanityUrl)`">
+                                <span class="icon"><i class="fab fa-linkedin-in"></i></span>
+                            </a>
+                        </div>
+                    </div>
+
+                    @* View as list and QR code buttons *@
+                    <div class="column is-half">
+                        <div id="view" class="buttons has-addons is-pulled-right">
+                            @* <button title="View as List" class="button" :class="{ 'is-active': !qr }"
+                        click="toggleQr(false)">
+                        <span class="icon"><i class="fas fa-list-ul"></i></span>
+                        </button> *@
+
+                            @* <button title="View as QR Code" class="button" :class="{ 'is-active': qr }"
+                        click="toggleQr(true)">
+                        <span class="icon"><i class="fas fa-qrcode"></i></span>
+                        </button> *@
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+                @* Links list *@
+                @foreach (var link in CurrentList.Links)
+                {
+                    <BundleItem Link="link" />
+                }
+                @* Delete button *@
+                <button id="deleteButton" v-if="currentList.links.length > 0 && listIsPublished"
+                    class="button is-large is-danger has-text-white is-fullwidth" click="deleteList">
+                    Delete This List
+                </button>
+                <div class="has-text-centered" v-else>
+                    <qr-code :value="`https://theurlist.com/${@(CurrentList.VanityUrl)}`"></qr-code>
+                </div>
+            </div>
         </div>
     </div>
-    @if (CurrentList == default!)
-    {
-        <em>Loading...</em>
-    }
-    else
-    {
-        @foreach (var link in CurrentList.Links)
-        {
-            <BundleItem Link="link" />
-        }
-    }
-    @* Delete button *@
-    <button id="deleteButton" v-if="currentList.links.length > 0 && listIsPublished"
-        class="button is-large is-danger has-text-white is-fullwidth" @click="deleteList">
-        Delete This List
-    </button>
-</div>
+}

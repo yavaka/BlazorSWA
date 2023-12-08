@@ -25,11 +25,21 @@ public class GetLinks
             SqlQuery ="SELECT * FROM c WHERE c.vanityUrl = {vanityUrl}",
             PartitionKey = "{vanityUrl}")] IEnumerable<LinkBundle> linkItem)
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        try
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-        var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(linkItem.Single());
-
-        return response;
+            if (linkItem.Any())
+            {
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteAsJsonAsync(linkItem.Single());
+                return response;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        return req.CreateResponse(HttpStatusCode.BadRequest);
     }
 }

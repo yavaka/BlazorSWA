@@ -13,6 +13,8 @@ public partial class Public
     [Parameter]
     public string VanityUrl { get; set; } = string.Empty;
 
+    private bool _showNotFoundNotification;
+
     public LinkBundle CurrentList { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
@@ -22,6 +24,15 @@ public partial class Public
 
     private async Task GetList()
     {
-        CurrentList = await Http.GetFromJsonAsync<LinkBundle>($"api/links/{VanityUrl}") ?? new LinkBundle();
+        var requst = await Http.GetAsync($"api/links/{VanityUrl}");
+
+        if (requst.IsSuccessStatusCode)
+        {
+            CurrentList = (await requst.Content.ReadFromJsonAsync<LinkBundle>())!;
+        }
+        else
+        {
+            _showNotFoundNotification = true;
+        }
     }
 }

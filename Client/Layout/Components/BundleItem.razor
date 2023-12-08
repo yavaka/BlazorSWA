@@ -1,11 +1,14 @@
 ﻿<div class="link-outer">
-    <div class="link-wrapper" :class="{ 'link-editable': editable }">
-        <div class="columns is-vcentered is-mobile">
-            <div class="column is-narrow" v-if="editable">
-                <span class="icon is-medium has-text-grey link-drag-handle">
-                    <i class="fas fa-lg fa-grip-vertical"></i>
-                </span>
-            </div>
+    <div class="link-wrapper @(Editable ? "link-editable" : string.Empty)">
+        <div class="is-vcentered is-mobile">
+            @if (Editable)
+            {
+                <div class="column is-narrow">
+                    <span class="icon is-medium has-text-grey link-drag-handle">
+                        <i class="fas fa-lg fa-grip-vertical"></i>
+                    </span>
+                </div>
+            }
             <div class="card link">
                 <div class="column">
                     <div class="columns is-vcentered">
@@ -41,20 +44,28 @@
                         </div>
                     </div>
                 </div>
-                <div class="is-overlay" v-if="!editable" @onclick="@OpenLink"></div>
+                @if (Editable is false)
+                {
+                    <a href="@(Link.Url)">
+                        <div class="is-overlay"></div>
+                    </a>
+                }
             </div>
-            <div class="column is-narrow" v-if="editable">
-                <div class="columns is-vcentered">
-                    <div class="column">
-                        <a class="has-text-bold link-delete has-text-grey" @click.prevent="deleteLink(link.id)">
-                            <span class="icon is-medium">
-                                <i class="fas fa-lg fa-times"></i>
-                            </span>
-                            <!-- <img src="/assets/close.png" alt /> -->
-                        </a>
+            @if (Editable)
+            {
+                <div class="column is-narrow">
+                    <div class="columns is-vcentered">
+                        <div class="column">
+                            <a class="has-text-bold link-delete has-text-grey" @click.prevent="deleteLink(link.id)">
+                                <span class="icon is-medium">
+                                    <i class="fas fa-lg fa-times"></i>
+                                </span>
+                                <!-- <img src="/assets/close.png" alt /> -->
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
 </div>
